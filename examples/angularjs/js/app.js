@@ -6,7 +6,7 @@
  * @type {angular.Module}
  */
 angular.module('todomvc', ['ngRoute', 'ngResource'])
-	.config(function ($routeProvider) {
+	.config(function ($routeProvider, $locationProvider) {
 		'use strict';
 
 		var routeConfig = {
@@ -23,6 +23,8 @@ angular.module('todomvc', ['ngRoute', 'ngResource'])
 			}
 		};
 
+		$locationProvider.hashPrefix('');
+		
 		$routeProvider
 			.when('/', routeConfig)
 			.when('/:status', routeConfig)
