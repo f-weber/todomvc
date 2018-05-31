@@ -6,6 +6,7 @@
  * - exposes the model to the template and provides event handlers
  */
 angular.module('todomvc')
+
 	.controller('TodoCtrl', function TodoCtrl($scope, $routeParams, $filter, store) {
 		'use strict';
 
@@ -52,6 +53,14 @@ angular.module('todomvc')
 			$scope.editedTodo = todo;
 			// Clone the original todo to restore it on demand.
 			$scope.originalTodo = angular.extend({}, todo);
+		};
+
+		//keydown event for tab
+		$scope.onKeydown = function(keycode){
+			if (keycode.which === 9) {
+			$scope.editedTodo = todo;
+			$scope.originalTodo = angular.extend({}, todo);
+			}
 		};
 
 		$scope.saveEdits = function (todo, event) {

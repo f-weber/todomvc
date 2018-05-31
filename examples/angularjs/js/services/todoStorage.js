@@ -163,3 +163,38 @@ angular.module('todomvc')
 
 		return store;
 	});
+/* pseudo code:
+	//needs to be in the individual items:
+		this._currentProgress = start || 0;
+    this._commandsList = [];
+    this._currentCommand = -1;
+
+	execute: function (command) {
+	        this._currentProgress = command.execute(this._currentProgress);
+	        this._currentCommand++;
+	        this._commandsList[this._currentCommand] = command;
+	        if (this._commandsList[this._currentCommand + 1]) {
+	            this._commandsList.splice(this._currentCommand + 1);
+	        }
+	    }
+
+	undo: function () {
+			var cmd = this._commandsList[this._currentCommand];
+			if (!cmd) {
+					console.error('Nothing to undo');
+					return;
+			}
+			this._currentProgress = cmd.undo(this._currentProgress);
+			this._currentCommand--;
+	},
+
+	redo: function () {
+			var cmd = this._commandsList[this._currentCommand + 1];
+			if (!cmd) {
+					console.error('Nothing to redo');
+					return;
+			}
+			this._currentProgress = cmd.execute(this._currentProgress);
+			this._currentCommand++;
+	}
+*/

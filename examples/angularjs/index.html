@@ -25,11 +25,16 @@
 						<li ng-repeat="todo in todos | filter:statusFilter track by $index" ng-class="{completed: todo.completed, editing: todo == editedTodo}">
 							<div class="view">
 								<input class="toggle" type="checkbox" ng-model="todo.completed" ng-change="toggleCompleted(todo)">
-								<label ng-dblclick="editTodo(todo)">{{todo.title}}</label>
+								<!-- added ng-keypress for edit-->
+								<label ng-dblclick="editTodo(todo)" ng-keypress="onKeydown($keycode)">{{todo.title}}</label>
 								<button class="destroy" ng-click="removeTodo(todo)"></button>
 							</div>
 							<form ng-submit="saveEdits(todo, 'submit')">
-								<input class="edit" ng-trim="false" ng-model="todo.title" todo-escape="revertEdits(todo)" ng-blur="saveEdits(todo, 'blur')" todo-focus="todo == editedTodo">
+								<!--original: <input class="edit" ng-trim="false" ng-model="todo.title" todo-escape="revertEdits(todo)" ng-blur="saveEdits(todo, 'blur')" todo-focus="todo == editedTodo"> -->
+								<!-- tabindex adds numbered index to each item which makes it easier for focus -->
+								<!-- needs to: when edit, on tab focus on index +1-->
+								<!-- does: focus on input field on top-->
+								<input next-focus tabindex="{{$index}}" class="edit" ng-trim="false" ng-model="todo.title" todo-escape="revertEdits(todo)" ng-blur="saveEdits(todo, 'blur') && addNew($index)" todo-focus="todo == editedTodo">
 							</form>
 						</li>
 					</ul>
@@ -48,6 +53,15 @@
 						<li>
 							<a ng-class="{selected: status == 'completed'}" href="#/completed">Completed</a>
 						</li>
+						<!-- pseudo code:
+						entry for the keypress commands, currently in button form:
+						<li>
+							<input type="button" value="Undo" id="btnUndo">  //replace with: strg+z (17+90)
+						</li>
+						<li>
+							<input type="button" value="Redo" id="btnRedo">  //replace with: strg+y (17+89)
+						</li>
+						-->
 					</ul>
 					<button class="clear-completed" ng-click="clearCompletedTodos()" ng-show="completedCount">Clear completed</button>
 				</footer>
@@ -72,5 +86,6 @@
 		<script src="js/services/todoStorage.js"></script>
 		<script src="js/directives/todoFocus.js"></script>
 		<script src="js/directives/todoEscape.js"></script>
+		<script src="js/directives/nextFocus.js"></script>
 	</body>
 </html>
